@@ -12,8 +12,8 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  tables: string[] = ['Deputados', 'Despesas', 'Evento', 'Legislatura', 'Orgãos'];
-  relatedTables: string[] = ['Despesas', 'Evento', 'Legislatura', 'Orgãos'];
+  tables: string[] = ['Deputados', 'Despesas', 'Evento', 'Legislatura', 'Orgaos'];
+  relatedTables: string[] = ['Despesas', 'Evento', 'Legislatura', 'Orgaos'];
   selectedTables: string[] = [];
   selectedMainTable!: string;
   reportData: any;
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   operators = {
     comparison: ["=", "!=", ">", "<", ">=", "<=", "like", "ilike"],
     logical: ["AND", "OR"],
-    groupBy: ["COUNT", "AVG"],
+    groupBy: ["COUNT", "SUM"],
     orderBy: ["ASC", "DESC"]
   }
 
@@ -192,18 +192,18 @@ export class HomeComponent implements OnInit {
   getTableStructure(tableName: string) {
     switch (tableName) {
       case "Deputados":
-        this.deputadoFields = ['id', 'nome', 'siglapartido', 'siglauf', 'idegislatura'];
+        this.deputadoFields = ['id', 'nome', 'siglapartido', 'siglauf', 'idlegislatura'];
         break;
 
       case "Evento":
-        this.eventoFields = ['id', 'sigla', 'created_at', 'updated_at', 'abbreviation', 'alternative_name', 'generation'];
+        this.eventoFields = ['id', 'datahorainicio', 'situacao', 'descricao', 'datahorafim', 'localexterno', 'localcamara'];
         break;
 
       case "Despesas":
         this.despesasFields = ['id','numdocumento', 'coddocumento', 'tipodespesa', 'datadocumento', 'valordocumento', 'nomefornecedor', 'cnpjcpffornecedor', 'valorliquido', 'id_deputado'];
         break;
 
-      case "Orgãos":
+      case "Orgaos":
         this.orgaoFields = ['id', 'sigla', 'nome', 'apelido', 'codtipoorgao', 'tipoorgao', 'nomepublicacao'];
         break;
 
@@ -289,7 +289,7 @@ export class HomeComponent implements OnInit {
           request.where.deputados = data.deputadoModeTableFilters;
           request.operators.deputados = [form.controls.deputadoModeOperator1.value, form.controls.deputadoModeOperator2.value, form.controls.deputadoModeOperator3.value];
           request.values.deputados = [form.controls.deputadoModeValue1.value, form.controls.deputadoModeValue2.value, form.controls.deputadoModeValue3.value];
-        } else if (this.selectedTables.includes("Orgãos")){
+        } else if (this.selectedTables.includes("Orgaos")){
           request.select.deputados = data.deputadoModeTableFields;
           request.join.push("evento_orgao");
           request.join.push("evento");
@@ -304,14 +304,15 @@ export class HomeComponent implements OnInit {
           request.values.plataforms = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
         }
       } else if (table === "Legislatura") {
-        request.select.legisla = data.legislaturaTableFields;
-        request.join.push("legisla");
-        request.where.legisla = data.legislaturaTableFilters;
-        request.operators.legisla = [form.controls.legislaturaOperator1.value, form.controls.legislaturaOperator2.value, form.controls.legislaturaOperator3.value];
-        request.values.legisla = [form.controls.legislaturaValue1.value, form.controls.legislaturaValue2.value, form.controls.legislaturaValue3.value];
-      } else if (table === "Orgãos") {
+        request.select.legislatura = data.legislaturaTableFields;
+        request.join.push("legislatura");
+        request.where.legislatura = data.legislaturaTableFilters;
+        request.operators.legislatura = [form.controls.legislaturaOperator1.value, form.controls.legislaturaOperator2.value, form.controls.legislaturaOperator3.value];
+        request.values.legislatura = [form.controls.legislaturaValue1.value, form.controls.legislaturaValue2.value, form.controls.legislaturaValue3.value];
+      } else if (table === "Orgaos") {
         request.select.orgaos = data.orgaoTableFields;
-        request.join.push("orgaos");
+        request.join.push("deputado_orgao");
+        request.join.push("orgaos");  
         request.where.orgaos = data.orgaoTableFilters;
         request.operators.orgaos = [form.controls.orgaoOperator1.value, form.controls.orgaoOperator2.value, form.controls.orgaoOperator3.value];
         request.values.orgaos = [form.controls.orgaoValue1.value, form.controls.orgaoValue2.value, form.controls.orgaoValue3.value];
@@ -370,12 +371,12 @@ export class HomeComponent implements OnInit {
         return request = this.addRequestInfo(request, form, "despesas");
       
       case "Evento":
-        return request = this.addRequestInfo(request, form, "plataforms");
+        return request = this.addRequestInfo(request, form, "evento");
       
       case "Legislatura":
-        return request = this.addRequestInfo(request, form, "legisla");
+        return request = this.addRequestInfo(request, form, "legislatura");
       
-      case "Orgãos":
+      case "Orgaos":
         return request = this.addRequestInfo(request, form, "orgaos");
     }
 
