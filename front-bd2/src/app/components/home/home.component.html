@@ -1,0 +1,640 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center start">
+    <div class="content">
+        <div class="logo" fxLayout="row" fxLayoutAlign="center center">
+            <img src="../../../assets/logo.png" alt="Câmara dos deputado Logo">
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="space-between center">
+            <form [formGroup]="form">
+                <div class="inputFields" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                    <mat-form-field>
+                        <mat-label>Tabela Principal</mat-label>
+                        <mat-select formControlName="selectedMainTable"
+                            (selectionChange)="onMainTableSelectionChange()">
+                            <mat-option *ngFor="let table of tables" [value]="table">{{ table }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="selectedMainTable === 'Deputados'">
+                        <mat-label>Tabelas Relacionadas</mat-label>
+                        <mat-select formControlName="selectedRelatedTables"
+                            (selectionChange)="onRelatedTablesSelectionChange()" multiple>
+                            <mat-option *ngFor="let table of relatedTables" [value]="table">{{ table }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="selectedMainTable" class="form-section">
+                    <span class="filter-title">Selecione os campos que deseja retornar na consulta</span>
+
+                    <div class="tableFields" fxLayout="row" fxLayoutGap="16px" style="margin-top: 5px;">
+                        <mat-form-field *ngIf="selectedTables.includes('Deputados')">
+                            <mat-label>Deputado</mat-label>
+                            <mat-select formControlName="deputadoTableFields" multiple>
+                                <mat-option *ngFor="let field of deputadoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                        <mat-form-field *ngIf="selectedTables.includes('Despesas')">
+                            <mat-label>Despesas</mat-label>
+                            <mat-select formControlName="despesasTableFields" multiple>
+                                <mat-option *ngFor="let field of despesasFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                        <mat-form-field *ngIf="selectedTables.includes('Evento')">
+                            <mat-label>Evento</mat-label>
+                            <mat-select formControlName="eventoTableFields" multiple>
+                                <mat-option *ngFor="let field of eventoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                        <mat-form-field *ngIf="selectedTables.includes('Orgão')">
+                            <mat-label>Orgãos</mat-label>
+                            <mat-select formControlName="orgaoTableFields" multiple>
+                                <mat-option *ngFor="let field of orgaoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                        <mat-form-field *ngIf="selectedTables.includes('Legislatura')">
+                            <mat-label>Legislatura</mat-label>
+                            <mat-select formControlName="legislaturaTableFields" multiple>
+                                <mat-option *ngFor="let field of legislaturaFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                    </div>
+                </div>
+
+                <div *ngIf="selectedMainTable" class="form-section">
+                    <span class="filter-title">Selecione os campos que deseja filtrar</span>
+                    <div class="tableFilters" fxLayout="row" fxLayoutGap="16px" style="margin-top: 5px;">
+                        <mat-form-field *ngIf="selectedTables.includes('Deputados')">
+                            <mat-label>deputado</mat-label>
+                            <mat-select formControlName="deputadoTableFilters" multiple>
+                                <mat-option *ngFor="let field of deputadoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="selectedTables.includes('Despesas')">
+                            <mat-label>Despesas</mat-label>
+                            <mat-select formControlName="despesasTableFilters" multiple>
+                                <mat-option *ngFor="let field of despesasFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="selectedTables.includes('Evento')">
+                            <mat-label>Evento</mat-label>
+                            <mat-select formControlName="eventoTableFilters" multiple>
+                                <mat-option *ngFor="let field of eventoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="selectedTables.includes('Orgão')">
+                            <mat-label>Orgãos</mat-label>
+                            <mat-select formControlName="orgaoTableFilters" multiple>
+                                <mat-option *ngFor="let field of orgaoFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="selectedTables.includes('Legislatura')">
+                            <mat-label>Legislatura</mat-label>
+                            <mat-select formControlName="legislaturaTableFilters" multiple>
+                                <mat-option *ngFor="let field of legislaturaFields" [value]="field">{{ field }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div>
+                        <div class="advancedFields">
+                            <div fxLayout="row" fxLayoutGap="16px">
+                                <mat-form-field>
+                                    <mat-label>Condicional</mat-label>
+                                    <mat-select formControlName="logicalOperator">
+                                        <mat-option *ngFor="let op of operators.logical" [value]="op">{{ op }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <mat-form-field>
+                                    <mat-label>Limit</mat-label>
+                                    <input matInput type="number" formControlName="limit">
+                                </mat-form-field>
+                            </div>
+                            
+                            <div fxLayout="column" fxLayoutAlign="center stretch" class="form-section">
+                                <div class="advancedFields">
+                                    <span class="filter-title">Selecione os campos que deseja utilizar no Order By ou na Função Agregada</span>
+                                    
+                                    <div fxLayout="row" fxLayoutGap="16px" style="margin-top: 5px;">
+                                        <mat-form-field>
+                                            <mat-label>Selecione uma tabela</mat-label>
+                                            <mat-select formControlName="selectedAggsTable">
+                                              <mat-option *ngFor="let table of selectedTables" [value]="table">{{ table }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+    
+                                        <div *ngIf="form.controls['selectedAggsTable'].value" class="aggsTable" fxLayout="row" fxLayoutGap="16px" style="margin-top: 5px;">
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Deputados'">
+                                                <mat-label>deputado</mat-label>
+                                                <mat-select formControlName="aggsParam">
+                                                    <mat-option *ngFor="let field of deputadoFields" [value]="field">{{ field }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+    
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Despesas'">
+                                                <mat-label>Despesas</mat-label>
+                                                <mat-select formControlName="aggsParam">
+                                                    <mat-option *ngFor="let field of despesasFields" [value]="field">{{ field }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+    
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Evento'">
+                                                <mat-label>Evento</mat-label>
+                                                <mat-select formControlName="aggsParam">
+                                                    <mat-option *ngFor="let field of eventoFields" [value]="field">{{ field }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+    
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Orgão'">
+                                                <mat-label>Orgãos</mat-label>
+                                                <mat-select formControlName="aggsParam">
+                                                    <mat-option *ngFor="let field of orgaoFields" [value]="field">{{ field }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+    
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Legislatura'">
+                                                <mat-label>Legislatura</mat-label>
+                                                <mat-select formControlName="aggsParam">
+                                                    <mat-option *ngFor="let field of legislaturaFields" [value]="field">{{ field }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutGap="16px">
+                                    <mat-form-field fxFlex="40">
+                                        <mat-label>Order By</mat-label>
+                                        <mat-select formControlName="orderBy" [disabled]="form.controls['func_agregada'].value">
+                                            <mat-option [value]="null">Nenhum</mat-option>
+                                            <mat-option *ngFor="let op of operators.orderBy" [value]="op">{{ op }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+        
+                                    <mat-form-field fxFlex="40">
+                                        <mat-label>Agregação</mat-label>
+                                        <mat-select formControlName="func_agregada" [disabled]="form.controls['orderBy'].value">
+                                            <mat-option [value]="null">Nenhum</mat-option>
+                                            <mat-option *ngFor="let op of operators.groupBy" [value]="op">{{ op }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-checkbox class="checkbox" formControlName="isChecked" fxFlex="20">Group By?</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div fxLayout="row wrap" fxLayoutGap="10px">
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['deputadoTableFilters'].value && form.controls['deputadoTableFilters'].value.length > 0" class="filters">
+                                <span class="filter-title">deputado</span>
+                                <div *ngIf="form.controls['deputadoTableFilters'].value[0]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                            <span style="margin-right: 40px;">{{ form.controls['deputadoTableFilters'].value[0] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="deputadoOperator1">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['deputadoTableFilters'].value[0] !== 'created_at' && form.controls['deputadoTableFilters'].value[0] !== 'updated_at' && form.controls['deputadoTableFilters'].value[0] !== 'release_date' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="deputadoValue1" [placeholder]="form.controls['deputadoTableFilters'].value[0] !== 'created_at' && form.controls['deputadoTableFilters'].value[0] !== 'updated_at' && form.controls['deputadoTableFilters'].value[0] !== 'release_date' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="form.controls['deputadoTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['deputadoTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="deputadoOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['deputadoTableFilters'].value[1] !== 'created_at' && form.controls['deputadoTableFilters'].value[1] !== 'updated_at' && form.controls['deputadoTableFilters'].value[1] !== 'release_date' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="deputadoValue2" [placeholder]="form.controls['deputadoTableFilters'].value[1] !== 'created_at' && form.controls['deputadoTableFilters'].value[1] !== 'updated_at' && form.controls['deputadoTableFilters'].value[1] !== 'release_date' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['deputadoTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['deputadoTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="deputadoOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['deputadoTableFilters'].value[2] !== 'created_at' && form.controls['deputadoTableFilters'].value[2] !== 'updated_at' && form.controls['deputadoTableFilters'].value[2] !== 'release_date' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="deputadoValue3" [placeholder]="form.controls['deputadoTableFilters'].value[2] !== 'created_at' && form.controls['deputadoTableFilters'].value[2] !== 'updated_at' && form.controls['deputadoTableFilters'].value[2] !== 'release_date' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['despesasTableFilters'].value && form.controls['despesasTableFilters'].value.length > 0" class="filters">
+                                <span class="filter-title">Despesas</span>
+                                <div *ngIf="form.controls['despesasTableFilters'].value[0]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['despesasTableFilters'].value[0] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="despesasOperator1">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['despesasTableFilters'].value[0] !== 'created_at' && form.controls['despesasTableFilters'].value[0] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="despesasValue1" [placeholder]="form.controls['despesasTableFilters'].value[0] !== 'created_at' && form.controls['despesasTableFilters'].value[0] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="form.controls['despesasTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['despesasTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="despesasOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['despesasTableFilters'].value[1] !== 'created_at' && form.controls['despesasTableFilters'].value[1] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="despesasValue2" [placeholder]="form.controls['despesasTableFilters'].value[1] !== 'created_at' && form.controls['despesasTableFilters'].value[1] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['despesasTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['despesasTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="despesasOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['despesasTableFilters'].value[2] !== 'created_at' && form.controls['despesasTableFilters'].value[2] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="despesasValue3" [placeholder]="form.controls['despesasTableFilters'].value[2] !== 'created_at' && form.controls['despesasTableFilters'].value[2] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['eventoTableFilters'].value && form.controls['eventoTableFilters'].value.length > 0" class="filters">
+                                <span class="filter-title">Evento</span>
+                                <div *ngIf="form.controls['eventoTableFilters'].value[0]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['eventoTableFilters'].value[0] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="eventoOperator1">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['eventoTableFilters'].value[0] !== 'created_at' && form.controls['eventoTableFilters'].value[0] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="eventoValue1" [placeholder]="form.controls['eventoTableFilters'].value[0] !== 'created_at' && form.controls['eventoTableFilters'].value[0] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="form.controls['eventoTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['eventoTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="eventoOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['eventoTableFilters'].value[1] !== 'created_at' && form.controls['eventoTableFilters'].value[1] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="eventoValue2" [placeholder]="form.controls['eventoTableFilters'].value[1] !== 'created_at' && form.controls['eventoTableFilters'].value[1] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['eventoTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['eventoTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="eventoOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['eventoTableFilters'].value[2] !== 'created_at' && form.controls['eventoTableFilters'].value[2] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="eventoValue3" [placeholder]="form.controls['eventoTableFilters'].value[2] !== 'created_at' && form.controls['platformTableFilters'].value[2] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['legislaturaTableFilters'].value && form.controls['legislaturaTableFilters'].value.length > 0" class="filters">
+                                <span class="filter-title">Legislatura</span>
+                                <div *ngIf="form.controls['legislaturaTableFilters'].value[0]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['legislaturaTableFilters'].value[0] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="legislaturaOperator1">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['legislaturaTableFilters'].value[0] !== 'created_at' && form.controls['legislaturaTableFilters'].value[0] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="legislaturaValue1" [placeholder]="form.controls['legislaturaTableFilters'].value[0] !== 'created_at' && form.controls['legislaturaTableFilters'].value[0] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="form.controls['legislaturaTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['legislaturaTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="legislaturaOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['legislaturaTableFilters'].value[1] !== 'created_at' && form.controls['legislaturaTableFilters'].value[1] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="legislaturaValue2" [placeholder]="form.controls['legislaturaTableFilters'].value[1] !== 'created_at' && form.controls['legislaturaTableFilters'].value[1] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['legislaturaTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['legislaturaTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="legislaturaOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['legislaturaTableFilters'].value[2] !== 'created_at' && form.controls['legislaturaTableFilters'].value[2] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="legislaturaValue3" [placeholder]="form.controls['legislaturaTableFilters'].value[2] !== 'created_at' && form.controls['legislaturaTableFilters'].value[2] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['orgaoTableFilters'].value && form.controls['orgaoTableFilters'].value.length > 0" class="filters">
+                                <span class="filter-title">Orgãos</span>
+                                <div *ngIf="form.controls['orgaoTableFilters'].value[0]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['orgaoTableFilters'].value[0] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="orgaoOperator1">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['orgaoTableFilters'].value[0] !== 'created_at' && form.controls['orgaoTableFilters'].value[0] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="orgaoValue1" [placeholder]="form.controls['orgaoTableFilters'].value[0] !== 'created_at' && form.controls['orgaoTableFilters'].value[0] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div *ngIf="form.controls['orgaoTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['orgaoTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="orgaoOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['orgaoTableFilters'].value[1] !== 'created_at' && form.controls['orgaoTableFilters'].value[1] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="orgaoValue2" [placeholder]="form.controls['orgaoTableFilters'].value[1] !== 'created_at' && form.controls['orgaoTableFilters'].value[1] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['orgaoTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['orgaoTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="orgaoOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['orgaoTableFilters'].value[2] !== 'created_at' && form.controls['orgaoTableFilters'].value[2] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="orgaoValue3" [placeholder]="form.controls['orgaoTableFilters'].value[2] !== 'created_at' && form.controls['orgaoTableFilters'].value[2] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div fxFlex="calc(50% - 10px)" *ngIf="form.controls['deputadoModeTableFilters'].value && form.controls['deputadoModeTableFilters'].value.length > 0" class="filters">
+        
+                                <div *ngIf="form.controls['deputadoModeTableFilters'].value[1]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['deputadoModeTableFilters'].value[1] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="deputadoModeOperator2">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['deputadoModeTableFilters'].value[1] !== 'created_at' && form.controls['deputadoModeTableFilters'].value[1] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="deputadoModeValue2" [placeholder]="form.controls['deputadoModeTableFilters'].value[1] !== 'created_at' && form.controls['deputadoModeTableFilters'].value[1] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="form.controls['deputadoModeTableFilters'].value[2]">
+                                    <div class="filter-list" style="margin: 10px 0;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <span>{{ form.controls['deputadoModeTableFilters'].value[2] }}</span>
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Operadores</mat-label>
+                                                    <mat-select formControlName="deputadoModeOperator3">
+                                                        <mat-option *ngFor="let op of operators.comparison" [value]="op">{{ op }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+            
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>{{form.controls['deputadoModeTableFilters'].value[2] !== 'created_at' && form.controls['deputadoModeTableFilters'].value[2] !== 'updated_at' ? 'Valor' : 'Data'}}</mat-label>
+                                                    
+                                                    <input matInput formControlName="deputadoModeValue3" [placeholder]="form.controls['deputadoModeTableFilters'].value[2] !== 'created_at' && form.controls['deputadoModeTableFilters'].value[2] !== 'updated_at' ? '' : 'YYYY-MM-DD'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="btn-section" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                    <button class="btn" mat-button color="warn" type="button" (click)="clearForm()">Limpar Filtros</button>
+                    <button class="btn" mat-raised-button color="primary" type="button"
+                        (click)="submitForm(form)">Buscar</button>
+                    <button class="btn btn-csv" mat-raised-button type="button"
+                        (click)="exportAsExcel()" 
+                        [disabled]="dataSource.data.length === 0"
+                        [ngClass]="{ 'btn-csv': dataSource.data.length > 0 }"
+                        >Exportar CSV</button
+                    >
+
+                    <div class="spinner" *ngIf="isSubmitting && !requestError" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+                        <mat-spinner diameter="30"></mat-spinner>
+                        <span>Realizando a consulta...</span>
+                    </div>
+                </div>
+
+                <div *ngIf="requestError" class="error-message" fxLayout="row" fxLayoutAlign="center center">
+                    {{ errorMessage }}
+                </div>
+            </form>
+        </div>
+
+        <div class="table-content">
+            <div>
+                <div class="table-wrapper" #TABLE>
+                    <table mat-table [dataSource]="dataSource" matSort #table>
+                        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
+                          <td mat-cell *matCellDef="let element" [ngClass]="{ 'column-summary': column === 'deputado_summary' || column === 'summary' }">{{ element[column] }}</td>
+                        </ng-container>
+                    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+    
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </div>
+
+        <!-- <div class="chart">
+            <canvas #chartCanvas></canvas>
+        </div> -->
+    </div>
+</div>

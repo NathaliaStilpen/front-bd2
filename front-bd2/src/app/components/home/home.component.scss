@@ -1,0 +1,116 @@
+.container {
+    width: 1000px;
+    //background: url("../../../assets/camera.png");
+    background: rgb(255, 255, 255);
+    min-height: 100vh;
+    height: 100%;
+
+    .content {
+        height: 100%;
+        width: 100%;
+        padding: 0px 40px 20px;
+        border-radius: 5px;
+
+        .logo {
+            margin-bottom: 50px;
+        }
+
+        form {
+            max-width: 960px;
+            width: 100%;
+
+            .form-section {
+                margin-top: 20px;
+            }
+
+            .inputFields {
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+    
+            .tableFields, .tableFilters {
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+
+            .filter-title {
+                font-size: 16px;
+                margin-bottom: 50px;
+            }
+                
+            .filters {
+                border: solid 1px grey;
+                border-radius: 2px;
+                padding: 20px;
+                margin: 5px 0;
+                max-width: 450px;
+                max-height: 320px;
+
+                mat-form-field {
+                    margin: 0 10px;
+                    width: 150px;
+                }
+            }
+
+            .advancedFields {
+                mat-form-field {
+                    width: 100%;
+                }
+
+                .aggsTable {
+                    width: 100%;
+                }
+            }
+
+            .checkbox {
+                padding: 0px 10px;
+                margin-top: 8px;
+            }
+        }
+    
+        .btn-section {
+            width: 100%;
+            margin-top: 30px;
+
+            button {
+                padding: 20px;
+                min-width: 150px;
+            }
+
+            .btn-csv {
+                background-color: #008000;
+                color: white;
+            }
+
+            .spinner {
+                margin-left: 20px;
+                padding: 15px;
+            }
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 30px;
+            font-size: 16px;
+            padding: 40px;
+            border-radius: 5px;
+            background-color: #f9e0e0;
+        }
+
+        .table-content {
+            margin-top: 30px;
+            padding: 0px 20px;            
+            max-width: 100%;
+
+            .table-wrapper {
+                overflow-x: auto;
+
+                .column-summary {
+                    min-width: 720px;
+                }
+            }
+        }
+    }
+}
