@@ -285,20 +285,20 @@ export class HomeComponent implements OnInit {
         if (this.selectedTables.includes("Deputados")) {
           request.select.deputados = data.deputadoModeTableFields;
           request.join.push("evento_deputado");
-          request.join.push("eventos");
+          request.join.push("evento");
           request.where.deputados = data.deputadoModeTableFilters;
           request.operators.deputados = [form.controls.deputadoModeOperator1.value, form.controls.deputadoModeOperator2.value, form.controls.deputadoModeOperator3.value];
           request.values.deputados = [form.controls.deputadoModeValue1.value, form.controls.deputadoModeValue2.value, form.controls.deputadoModeValue3.value];
         } else if (this.selectedTables.includes("Orgãos")){
           request.select.deputados = data.deputadoModeTableFields;
           request.join.push("evento_orgao");
-          request.join.push("eventos");
+          request.join.push("evento");
           request.where.deputados = data.deputadoModeTableFilters;
           request.operators.deputados = [form.controls.deputadoModeOperator1.value, form.controls.deputadoModeOperator2.value, form.controls.deputadoModeOperator3.value];
           request.values.deputados = [form.controls.deputadoModeValue1.value, form.controls.deputadoModeValue2.value, form.controls.deputadoModeValue3.value];
         }else {
           request.select.plataforms = data.eventoTableFields;
-          request.join.push("eventos");
+          request.join.push("evento");
           request.where.plataforms = data.eventoTableFilters;
           request.operators.plataforms = [form.controls.eventoOperator1.value, form.controls.eventoOperator2.value, form.controls.eventoOperator3.value];
           request.values.plataforms = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
