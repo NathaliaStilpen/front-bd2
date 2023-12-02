@@ -1,18 +1,29 @@
+
 .container {
-    width: 1000px;
-    //background: url("../../../assets/camera.png");
-    background: rgb(255, 255, 255);
+    background-image: url("../../../assets/b.png") ; /* Substitua 'caminho/da/imagem.jpg' pelo caminho real da sua imagem */
+    background-size: cover; /* Isso garante que a imagem cubra todo o contêiner */
+    background-position: center; /* Isso centraliza a imagem no contêiner */
+    height: 500px;
+    width: 1650px;
+    //background: rgb(255, 255, 255);
     min-height: 100vh;
     height: 100%;
 
     .content {
+        
         height: 100%;
-        width: 100%;
+        width: 70%;
         padding: 0px 40px 20px;
         border-radius: 5px;
 
         .logo {
-            margin-bottom: 50px;
+            margin-bottom: 80px;
+            margin-top: 20px;
+        
+        }
+
+        .fild-title {
+            background-color: #50B748;
         }
 
         form {
@@ -20,35 +31,42 @@
             width: 100%;
 
             .form-section {
+                
                 margin-top: 20px;
             }
 
             .inputFields {
+                
                 mat-form-field {
                     width: 100%;
                 }
             }
     
             .tableFields, .tableFilters {
+                
                 mat-form-field {
                     width: 100%;
                 }
             }
 
             .filter-title {
+                
+                color: #ffffff;
                 font-size: 16px;
                 margin-bottom: 50px;
             }
                 
             .filters {
-                border: solid 1px grey;
-                border-radius: 2px;
+                
+                border: solid 1px rgb(255, 255, 255);
+                border-radius: 50px;
                 padding: 20px;
                 margin: 5px 0;
                 max-width: 450px;
                 max-height: 320px;
 
                 mat-form-field {
+                    
                     margin: 0 10px;
                     width: 150px;
                 }
@@ -56,7 +74,8 @@
 
             .advancedFields {
                 mat-form-field {
-                    width: 100%;
+                    
+                    width: 80%;
                 }
 
                 .aggsTable {
@@ -75,12 +94,18 @@
             margin-top: 30px;
 
             button {
+                
                 padding: 20px;
                 min-width: 150px;
             }
 
+            .btn-buscar {
+                background-color: #50B748;
+                border-radius: 20px;
+            }
+
             .btn-csv {
-                background-color: #008000;
+                background-color: #50B748;
                 color: white;
             }
 
@@ -99,10 +124,17 @@
             background-color: #f9e0e0;
         }
 
+        .ng-deep .custom-input-field .mat-input-element {
+            background-color: #ffcc00;  /* Substitua isso pela cor desejada */
+        }
+        
+
         .table-content {
+            
             margin-top: 30px;
             padding: 0px 20px;            
             max-width: 100%;
+            
 
             .table-wrapper {
                 overflow-x: auto;
