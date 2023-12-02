@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   operators = {
     comparison: ["=", "!=", ">", "<", ">=", "<=", "like", "ilike"],
     logical: ["AND", "OR"],
-    groupBy: ["COUNT", "SUM"],
+    groupBy: ["COUNT", "SUM", "MIN", "MAX"],
     orderBy: ["ASC", "DESC"]
   }
 
