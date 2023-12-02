@@ -49,7 +49,7 @@
                             </mat-select>
                         </mat-form-field>
     
-                        <mat-form-field *ngIf="selectedTables.includes('Orgão')">
+                        <mat-form-field *ngIf="selectedTables.includes('Orgãos')">
                             <mat-label>Orgãos</mat-label>
                             <mat-select formControlName="orgaosTableFields" multiple>
                                 <mat-option *ngFor="let field of orgaosFields" [value]="field">{{ field }}</mat-option>
@@ -90,7 +90,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field *ngIf="selectedTables.includes('Orgão')">
+                        <mat-form-field *ngIf="selectedTables.includes('Orgãos')">
                             <mat-label>Orgãos</mat-label>
                             <mat-select formControlName="orgaosTableFilters" multiple>
                                 <mat-option *ngFor="let field of orgaosFields" [value]="field">{{ field }}</mat-option>
@@ -156,7 +156,7 @@
                                                 </mat-select>
                                             </mat-form-field>
     
-                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Orgão'">
+                                            <mat-form-field *ngIf="form.controls['selectedAggsTable'].value === 'Orgãos'">
                                                 <mat-label>Orgãos</mat-label>
                                                 <mat-select formControlName="aggsParam">
                                                     <mat-option *ngFor="let field of orgaosFields" [value]="field">{{ field }}</mat-option>
