@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
 })
 export class HomeComponent implements OnInit {
   tables: string[] = ['Deputados'];
-  relatedTables: string[] = ['Despesas', 'Evento', 'Legislatura', 'Orgaos'];
+  relatedTables: string[] = ['Despesas', 'Evento', 'Legislatura', 'Orgãos'];
   selectedTables: string[] = [];
   selectedMainTable!: string;
   reportData: any;
@@ -203,7 +203,7 @@ export class HomeComponent implements OnInit {
         this.despesasFields = ['id','numdocumento', 'coddocumento', 'tipodespesa', 'datadocumento', 'valordocumento', 'nomefornecedor', 'cnpjcpffornecedor', 'valorliquido', 'id_deputado'];
         break;
 
-      case "Orgaos":
+      case "Orgãos":
         this.orgaosFields = ['id', 'sigla', 'nome', 'apelido', 'codtipoorgao', 'tipoorgao', 'nomepublicacao'];
         break;
 
@@ -283,25 +283,25 @@ export class HomeComponent implements OnInit {
         request.values.despesas = [form.controls.despesasValue1.value, form.controls.despesasValue2.value, form.controls.despesasValue3.value];
       } else if (table === "Evento") {
         if (this.selectedTables.includes("Deputados")) {
-          request.select.deputados = data.deputadoModeTableFields;
+          request.select.evento = data.eventoTableFields;
           request.join.push("evento_deputado");
           request.join.push("evento");
-          request.where.deputados = data.deputadoModeTableFilters;
-          request.operators.deputados = [form.controls.deputadoModeOperator1.value, form.controls.deputadoModeOperator2.value, form.controls.deputadoModeOperator3.value];
-          request.values.deputados = [form.controls.deputadoModeValue1.value, form.controls.deputadoModeValue2.value, form.controls.deputadoModeValue3.value];
-        } else if (this.selectedTables.includes("Orgaos")){
-          request.select.deputados = data.deputadoModeTableFields;
+          request.where.evento = data.eventoTableFilters;
+          request.operators.evento = [form.controls.eventoOperator1.value, form.controls.eventoOperator2.value, form.controls.eventoOperator3.value];
+          request.values.evento = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
+        } else if (this.selectedTables.includes("Orgãos")){
+          request.select.evento = data.eventoTableFields;
           request.join.push("evento_orgao");
           request.join.push("evento");
-          request.where.deputados = data.deputadoModeTableFilters;
-          request.operators.deputados = [form.controls.deputadoModeOperator1.value, form.controls.deputadoModeOperator2.value, form.controls.deputadoModeOperator3.value];
-          request.values.deputados = [form.controls.deputadoModeValue1.value, form.controls.deputadoModeValue2.value, form.controls.deputadoModeValue3.value];
+          request.where.evento = data.eventoTableFilters;
+          request.operators.evento = [form.controls.eventoOperator1.value, form.controls.eventoOperator2.value, form.controls.eventoOperator3.value];
+          request.values.evento = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
         }else {
-          request.select.plataforms = data.eventoTableFields;
+          request.select.evento = data.eventoTableFields;
           request.join.push("evento");
-          request.where.plataforms = data.eventoTableFilters;
-          request.operators.plataforms = [form.controls.eventoOperator1.value, form.controls.eventoOperator2.value, form.controls.eventoOperator3.value];
-          request.values.plataforms = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
+          request.where.evento = data.eventoTableFilters;
+          request.operators.evento = [form.controls.eventoOperator1.value, form.controls.eventoOperator2.value, form.controls.eventoOperator3.value];
+          request.values.evento = [form.controls.eventoValue1.value, form.controls.eventoValue2.value, form.controls.eventoValue3.value];
         }
       } else if (table === "Legislatura") {
         request.select.legislatura = data.legislaturaTableFields;
@@ -309,7 +309,7 @@ export class HomeComponent implements OnInit {
         request.where.legislatura = data.legislaturaTableFilters;
         request.operators.legislatura = [form.controls.legislaturaOperator1.value, form.controls.legislaturaOperator2.value, form.controls.legislaturaOperator3.value];
         request.values.legislatura = [form.controls.legislaturaValue1.value, form.controls.legislaturaValue2.value, form.controls.legislaturaValue3.value];
-      } else if (table === "Orgaos") {
+      } else if (table === "Orgãos") {
         request.select.orgaos = data.orgaosTableFields;
         request.join.push("deputado_orgao");
         request.join.push("orgaos");  
@@ -376,7 +376,7 @@ export class HomeComponent implements OnInit {
       case "Legislatura":
         return request = this.addRequestInfo(request, form, "legislatura");
       
-      case "Orgaos":
+      case "Orgãos":
         return request = this.addRequestInfo(request, form, "orgaos");
     }
 
