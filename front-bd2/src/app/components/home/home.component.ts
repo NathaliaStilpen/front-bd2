@@ -109,10 +109,9 @@ export class HomeComponent implements OnInit {
       deputadoModeValue2: [null],
       deputadoModeValue3: [null],
 
-      selectedAggsTable: [null],
+      selectedAggsTable: "Deputados",
       aggsParam: [null],
       logicalOperator: [null],
-      limit: [null],
       orderBy: [null],
       func_agregada: [null],
       isChecked: [null]
@@ -252,7 +251,6 @@ export class HomeComponent implements OnInit {
       operators: {},
       values: {},
       condition: form.controls.logicalOperator.value,
-      limit: form.controls.limit.value,
       order_by: null,
       func_agregada: null,
       group_by: form.get('isChecked')?.value
